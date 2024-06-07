@@ -1,10 +1,8 @@
 from sanic import Sanic
 from sanic.response import json
-from utils.utils import insert_data
-import json
+from utils.utils import insert_data_signup
 
 app = Sanic(__name__)
-
 
 @app.route("/hello", methods=["GET"])
 async def hello(request):
@@ -13,9 +11,7 @@ async def hello(request):
 @app.route("/submit", methods=["POST"])
 async def submit(request):
 
-    body = json.loads(request.body.decode())
-
-    print(body)
+    body = request.json
 
     first_name = body["first_name"]
     last_name = body["last_name"]
@@ -23,10 +19,10 @@ async def submit(request):
     email = body["email"]
     aadhar_number = body["aadhar_number"]
 
-    if(insert_data(first_name, last_name, password, email, aadhar_number)):
-        return json({"status":200,"message": "Data submitted successfully"})
+    if insert_data_signup(first_name, last_name, password, email, aadhar_number):
+        return json({"status": 200, "message": "Data submitted successfully"})
     else:
-        return json({"status":400, "message": "Data submission failed"})
+        return json({"status": 400, "message": "Data submission failed"})
 
 if __name__ == "__main__":
     app.run(host="localhost", port=6969, debug=True)
