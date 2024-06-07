@@ -1,4 +1,4 @@
-from backend.database.config import collection
+from database.config import collection
 
 def insert_data(first_name, last_name, password, email, aadhar_number):
         data = {
@@ -11,3 +11,4 @@ def insert_data(first_name, last_name, password, email, aadhar_number):
         res = collection.insert_one(data)
 
         return (res != None) 
+        

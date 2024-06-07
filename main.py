@@ -1,9 +1,13 @@
 from sanic import Sanic
 from sanic.response import json
-from backend.utils.utils import insert_data
+from utils.utils import insert_data
 
 app = Sanic(__name__)
 
+
+@app.route("/hello", methods=["GET"])
+async def hello():
+    return json({"hello": "world"})
 
 @app.route("/submit", methods=["POST"])
 async def submit(request):
@@ -20,4 +24,4 @@ async def submit(request):
         return json({"status":400, "message": "Data submission failed"})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=6969, debug=True)
+    app.run(host="localhost", port=6969, debug=True)
