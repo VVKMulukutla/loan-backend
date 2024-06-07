@@ -6,5 +6,12 @@ load_dotenv()
 
 client = MongoClient(os.getenv("DATABASE_URI"))
 
-db = client["user"]
-collection = db["user-collection"]
+
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+
+db = client["loan-users"]
+collection = db["loan-users-collection"]
