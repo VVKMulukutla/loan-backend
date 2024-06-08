@@ -1,9 +1,10 @@
 from sanic import Sanic
 from sanic.response import json
 from routes.settings import *
-
+from sanic_cors import CORS
 
 app = Sanic(__name__)
+CORS(app, resources={r"/": {"origins": ""}})
 
 
 app.add_route(hello, "/hello", methods=["GET"])

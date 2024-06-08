@@ -1,10 +1,12 @@
 from dotenv import load_dotenv
 from pymongo import MongoClient
+from motor.motor_asyncio import AsyncIOMotorClient
+
 import os 
 
 load_dotenv()
 
-client = MongoClient(os.getenv("DATABASE_URI"))
+client = AsyncIOMotorClient(os.getenv("DATABASE_URI"))
 
 
 try:

@@ -1,5 +1,5 @@
-from utils.utils import insert_data_signup
-from database.schemas import UserCreate
+from utils.utils import *
+from database.schemas import UserCreate, UserLogin
 from sanic.response import json
 from pydantic import ValidationError
 
@@ -12,13 +12,14 @@ async def register(request):
 
         user_data = UserCreate(**body)
 
-        first_name = user_data.first_name
-        last_name = user_data.last_name
+        firstname = user_data.firstname
+        lastname = user_data.lastname
         password = user_data.password
+        confirmPassword = user_data.confirmPassword
         email = user_data.email
-        aadhar_number = user_data.aadhar_number
+        gender = user_data.gender
 
-        if insert_data_signup(first_name, last_name, password, email, aadhar_number):
+        if insert_data_signup(firstname, lastname, password, confirmPassword, email, gender):
             return json({"status": 200, "message": "Data submitted successfully"})
         else:
             return json({"status": 400, "message": "Data submission failed"})
@@ -28,7 +29,23 @@ async def register(request):
         return json({"status": 500, "message": "Data submission failed", "errors": str(e)})
 
 async def login(request):
-    pass
+    try:
+        body = request.json
+
+        user_login = UserLogin(**body)
+
+        username = user_login.username
+        email = user_login.email
+        password = user_login.password
+
+        if(check_login(username, email, password)):
+            return json({"status": 200, "message": "Login successful"})
+        else:
+            return json({"status": 400, "message": "Login failed"})
+    except ValidationError as e:
+        return json({"status": 400, "message": "Data validation failed", "errors": e.errors()})
+    except Exception as e:
+        return json({"status": 500, "message": "Login failed", "errors": str(e)})
 
 async def lender_login(request):
     pass
